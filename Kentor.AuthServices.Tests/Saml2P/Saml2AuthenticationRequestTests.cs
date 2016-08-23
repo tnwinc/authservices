@@ -20,7 +20,7 @@ namespace Kentor.AuthServices.Tests.Saml2P
             var subject = new Saml2AuthenticationRequest().ToXElement();
 
             subject.Should().NotBeNull().And.Subject.Name.Should().Be(
-                Saml2Namespaces.Saml2P + "AuthnRequest" );
+                Saml2Namespaces.Saml2P + "AuthnRequest");
         }
 
         [TestMethod]
@@ -32,8 +32,8 @@ namespace Kentor.AuthServices.Tests.Saml2P
 
             var subject = new Saml2AuthenticationRequest().ToXElement();
 
-            subject.Should().NotBeNull().And.Subject.Attribute( "ID" ).Should().NotBeNull();
-            subject.Attribute( "AttributeConsumingServiceIndex" ).Should().BeNull();
+            subject.Should().NotBeNull().And.Subject.Attribute("ID").Should().NotBeNull();
+            subject.Attribute("AttributeConsumingServiceIndex").Should().BeNull();
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace Kentor.AuthServices.Tests.Saml2P
                 AttributeConsumingServiceIndex = 17
             }.ToXElement();
 
-            subject.Attribute( "AttributeConsumingServiceIndex" ).Value.Should().Be( "17" );
+            subject.Attribute("AttributeConsumingServiceIndex").Value.Should().Be("17");
         }
 
         [TestMethod]
@@ -53,11 +53,11 @@ namespace Kentor.AuthServices.Tests.Saml2P
             var url = "http://some.example.com/Saml2AuthenticationModule/acs";
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( url )
+                AssertionConsumerServiceUrl = new Uri(url)
             }.ToXElement();
 
-            subject.Should().NotBeNull().And.Subject.Attribute( "AssertionConsumerServiceURL" )
-                .Should().NotBeNull().And.Subject.Value.Should().Be( url );
+            subject.Should().NotBeNull().And.Subject.Attribute("AssertionConsumerServiceURL")
+                .Should().NotBeNull().And.Subject.Value.Should().Be(url);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Kentor.AuthServices.Tests.Saml2P
                 ForceAuthentication = false
             }.ToXElement();
 
-            subject.Should().NotBeNull().And.Subject.Attribute( "ForceAuthn" ).Should().BeNull();
+            subject.Should().NotBeNull().And.Subject.Attribute("ForceAuthn").Should().BeNull();
         }
 
         [TestMethod]
@@ -79,8 +79,8 @@ namespace Kentor.AuthServices.Tests.Saml2P
                 ForceAuthentication = true
             }.ToXElement();
 
-            subject.Should().NotBeNull().And.Subject.Attribute( "ForceAuthn" )
-                .Should().NotBeNull().And.Subject.Value.Should().Be( "true" );
+            subject.Should().NotBeNull().And.Subject.Attribute("ForceAuthn")
+                .Should().NotBeNull().And.Subject.Value.Should().Be("true");
         }
 
         [TestMethod]
@@ -103,12 +103,12 @@ namespace Kentor.AuthServices.Tests.Saml2P
 
             var relayState = "My relay state";
             var forceAuthn = true;
-            var subject = Saml2AuthenticationRequest.Read( xmlData, relayState );
+            var subject = Saml2AuthenticationRequest.Read(xmlData, relayState);
 
-            subject.Id.Should().Be( new Saml2Id( "Saml2AuthenticationRequest_AssertionConsumerServiceUrl" ) );
-            subject.AssertionConsumerServiceUrl.Should().Be( new Uri( "https://sp.example.com/SAML2/Acs" ) );
-            subject.RelayState.Should().Be( relayState );
-            subject.ForceAuthentication.Should().Be( forceAuthn );
+            subject.Id.Should().Be(new Saml2Id("Saml2AuthenticationRequest_AssertionConsumerServiceUrl"));
+            subject.AssertionConsumerServiceUrl.Should().Be(new Uri("https://sp.example.com/SAML2/Acs"));
+            subject.RelayState.Should().Be(relayState);
+            subject.ForceAuthentication.Should().Be(forceAuthn);
         }
 
         [TestMethod]
@@ -127,10 +127,10 @@ namespace Kentor.AuthServices.Tests.Saml2P
 </samlp:AuthnRequest>
 ";
 
-            var subject = Saml2AuthenticationRequest.Read( xmlData, null );
+            var subject = Saml2AuthenticationRequest.Read(xmlData, null);
 
-            subject.Id.Should().Be( new Saml2Id( "Saml2AuthenticationRequest_Read_NoACS" ) );
-            subject.AssertionConsumerServiceUrl.Should().Be( null );
+            subject.Id.Should().Be(new Saml2Id("Saml2AuthenticationRequest_Read_NoACS"));
+            subject.AssertionConsumerServiceUrl.Should().Be(null);
         }
 
         [TestMethod]
@@ -151,9 +151,9 @@ namespace Kentor.AuthServices.Tests.Saml2P
 </samlp:AuthnRequest>
 ";
 
-            Action a = () => Saml2AuthenticationRequest.Read( xmlData, null );
+            Action a = () => Saml2AuthenticationRequest.Read(xmlData, null);
 
-            a.ShouldThrow<XmlException>().WithMessage( "Wrong or unsupported SAML2 version" );
+            a.ShouldThrow<XmlException>().WithMessage("Wrong or unsupported SAML2 version");
         }
 
         [TestMethod]
@@ -174,9 +174,9 @@ namespace Kentor.AuthServices.Tests.Saml2P
 </samlp:NotAuthnRequest>
 ";
 
-            Action a = () => Saml2AuthenticationRequest.Read( xmlData, null );
+            Action a = () => Saml2AuthenticationRequest.Read(xmlData, null);
 
-            a.ShouldThrow<XmlException>().WithMessage( "Expected a SAML2 authentication request document" );
+            a.ShouldThrow<XmlException>().WithMessage("Expected a SAML2 authentication request document");
         }
 
         [TestMethod]
@@ -195,10 +195,10 @@ namespace Kentor.AuthServices.Tests.Saml2P
     <saml2p:NameIDPolicy AllowCreate = ""false"" Format = ""urn:oasis:names:tc:SAML:2.0:nameid-format:persistent"" SPNameQualifier = ""NameQualifier"" />
    </saml2p:AuthnRequest>";
 
-            var subject = Saml2AuthenticationRequest.Read( xmlData, null );
-            subject.NameIdPolicy.AllowCreate.Should().Be( false );
-            subject.NameIdPolicy.Format.Should().Be( NameIdFormat.Persistent );
-            subject.NameIdPolicy.ServiceProviderNameQualifier.Should().Be( "NameQualifier" );
+            var subject = Saml2AuthenticationRequest.Read(xmlData, null);
+            subject.NameIdPolicy.AllowCreate.Should().Be(false);
+            subject.NameIdPolicy.Format.Should().Be(NameIdFormat.Persistent);
+            subject.NameIdPolicy.ServiceProviderNameQualifier.Should().Be("NameQualifier");
         }
 
         [TestMethod]
@@ -217,9 +217,9 @@ namespace Kentor.AuthServices.Tests.Saml2P
     <saml2p:NameIDPolicy AllowCreate = ""false""/>
    </saml2p:AuthnRequest>";
 
-            var subject = Saml2AuthenticationRequest.Read( xmlData, null );
-            subject.NameIdPolicy.AllowCreate.Should().Be( false );
-            subject.NameIdPolicy.Format.Should().Be( NameIdFormat.NotConfigured );
+            var subject = Saml2AuthenticationRequest.Read(xmlData, null);
+            subject.NameIdPolicy.AllowCreate.Should().Be(false);
+            subject.NameIdPolicy.Format.Should().Be(NameIdFormat.NotConfigured);
         }
 
         [TestMethod]
@@ -227,19 +227,19 @@ namespace Kentor.AuthServices.Tests.Saml2P
         {
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
-                NameIdPolicy = new Saml2NameIdPolicy( false, NameIdFormat.NotConfigured )
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
+                NameIdPolicy = new Saml2NameIdPolicy(false, NameIdFormat.NotConfigured)
             }.ToXElement();
 
-            var expected = new XElement( Saml2Namespaces.Saml2P + "root",
-                new XAttribute( XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P ),
-                new XElement( Saml2Namespaces.Saml2P + "NameIDPolicy",
-                    new XAttribute( "AllowCreate", false ) ) )
+            var expected = new XElement(Saml2Namespaces.Saml2P + "root",
+                new XAttribute(XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P),
+                new XElement(Saml2Namespaces.Saml2P + "NameIDPolicy",
+                    new XAttribute("AllowCreate", false)))
                 .Elements().Single();
 
-            subject.Attribute( "AttributeConsumingServiceIndex" ).Should().BeNull();
-            subject.Element( Saml2Namespaces.Saml2P + "NameIDPolicy" )
-                .Should().BeEquivalentTo( expected );
+            subject.Attribute("AttributeConsumingServiceIndex").Should().BeNull();
+            subject.Element(Saml2Namespaces.Saml2P + "NameIDPolicy")
+                .Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -247,18 +247,18 @@ namespace Kentor.AuthServices.Tests.Saml2P
         {
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
-                NameIdPolicy = new Saml2NameIdPolicy( null, NameIdFormat.EmailAddress )
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
+                NameIdPolicy = new Saml2NameIdPolicy(null, NameIdFormat.EmailAddress)
             }.ToXElement();
 
-            var expected = new XElement( Saml2Namespaces.Saml2P + "root",
-                new XAttribute( XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P ),
-                new XElement( Saml2Namespaces.Saml2P + "NameIDPolicy",
-                    new XAttribute( "Format", "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" ) ) )
+            var expected = new XElement(Saml2Namespaces.Saml2P + "root",
+                new XAttribute(XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P),
+                new XElement(Saml2Namespaces.Saml2P + "NameIDPolicy",
+                    new XAttribute("Format", "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress")))
                 .Elements().Single();
 
-            subject.Element( Saml2Namespaces.Saml2P + "NameIDPolicy" )
-                .Should().BeEquivalentTo( expected );
+            subject.Element(Saml2Namespaces.Saml2P + "NameIDPolicy")
+                .Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -267,20 +267,20 @@ namespace Kentor.AuthServices.Tests.Saml2P
             var nameQualifier = "NameQualifier";
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
-                NameIdPolicy = new Saml2NameIdPolicy( true, NameIdFormat.Unspecified, nameQualifier )
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
+                NameIdPolicy = new Saml2NameIdPolicy(true, NameIdFormat.Unspecified, nameQualifier)
             }.ToXElement();
 
-            var expected = new XElement( Saml2Namespaces.Saml2 + "root",
-                new XAttribute( XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P ),
-                new XElement( Saml2Namespaces.Saml2P + "NameIDPolicy",
-                    new XAttribute( "Format", "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" ),
-                    new XAttribute( "AllowCreate", true ),
-                    new XAttribute( "SPNameQualifier", nameQualifier ) ) )
+            var expected = new XElement(Saml2Namespaces.Saml2 + "root",
+                new XAttribute(XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P),
+                new XElement(Saml2Namespaces.Saml2P + "NameIDPolicy",
+                    new XAttribute("Format", "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"),
+                    new XAttribute("AllowCreate", true),
+                    new XAttribute("SPNameQualifier", nameQualifier)))
                 .Elements().Single();
 
-            subject.Element( Saml2Namespaces.Saml2P + "NameIDPolicy" )
-                .Should().BeEquivalentTo( expected );
+            subject.Element(Saml2Namespaces.Saml2P + "NameIDPolicy")
+                .Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -293,31 +293,31 @@ namespace Kentor.AuthServices.Tests.Saml2P
 
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
                 Scoping = new Saml2Scoping
                 {
                     ProxyCount = 5
                 }
-                    .With( new Saml2IdpEntry( new EntityId( providerId ) )
+                    .With(new Saml2IdpEntry(new EntityId(providerId))
                     {
                         Name = name,
-                        Location = new Uri( location )
-                    } )
-                    .WithRequesterId( new EntityId( requesterId ) )
+                        Location = new Uri(location)
+                    })
+                    .WithRequesterId(new EntityId(requesterId))
             };
 
-            var actual = subject.ToXElement().Element( Saml2Namespaces.Saml2P + "Scoping" );
+            var actual = subject.ToXElement().Element(Saml2Namespaces.Saml2P + "Scoping");
 
-            var expected = new XElement( Saml2Namespaces.Saml2P + "Scoping",
-                new XAttribute( "ProxyCount", "5" ),
-                new XElement( Saml2Namespaces.Saml2P + "IDPList",
-                    new XElement( Saml2Namespaces.Saml2P + "IDPEntry",
-                        new XAttribute( "ProviderID", providerId ),
-                        new XAttribute( "Name", name ),
-                        new XAttribute( "Loc", location ) ) ),
-                new XElement( Saml2Namespaces.Saml2P + "RequesterID", requesterId ) );
+            var expected = new XElement(Saml2Namespaces.Saml2P + "Scoping",
+                new XAttribute("ProxyCount", "5"),
+                new XElement(Saml2Namespaces.Saml2P + "IDPList",
+                    new XElement(Saml2Namespaces.Saml2P + "IDPEntry",
+                        new XAttribute("ProviderID", providerId),
+                        new XAttribute("Name", name),
+                        new XAttribute("Loc", location))),
+                new XElement(Saml2Namespaces.Saml2P + "RequesterID", requesterId));
 
-            actual.Should().BeEquivalentTo( expected );
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -325,22 +325,22 @@ namespace Kentor.AuthServices.Tests.Saml2P
         {
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
                 Scoping = new Saml2Scoping
                 {
                     ProxyCount = 0
                 }
             };
 
-            var actual = subject.ToXElement().Element( Saml2Namespaces.Saml2P + "Scoping" );
+            var actual = subject.ToXElement().Element(Saml2Namespaces.Saml2P + "Scoping");
 
-            var expected = new XElement( Saml2Namespaces.Saml2P + "root",
-                new XAttribute( XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P ),
-                new XElement( Saml2Namespaces.Saml2P + "Scoping",
-                    new XAttribute( "ProxyCount", "0" ) ) )
+            var expected = new XElement(Saml2Namespaces.Saml2P + "root",
+                new XAttribute(XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P),
+                new XElement(Saml2Namespaces.Saml2P + "Scoping",
+                    new XAttribute("ProxyCount", "0")))
                 .Elements().Single();
 
-            actual.Should().BeEquivalentTo( expected );
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
@@ -348,58 +348,58 @@ namespace Kentor.AuthServices.Tests.Saml2P
         {
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
                 Scoping = new Saml2Scoping()
-            }.ToXElement().Element( Saml2Namespaces.Saml2P + "Scoping" );
+            }.ToXElement().Element(Saml2Namespaces.Saml2P + "Scoping");
 
-            var expected = new XElement( Saml2Namespaces.Saml2P + "root",
-                new XAttribute( XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P ),
-                new XElement( Saml2Namespaces.Saml2P + "Scoping" ) )
+            var expected = new XElement(Saml2Namespaces.Saml2P + "root",
+                new XAttribute(XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P),
+                new XElement(Saml2Namespaces.Saml2P + "Scoping"))
                 .Elements().Single();
 
-            subject.Should().BeEquivalentTo( expected );
+            subject.Should().BeEquivalentTo(expected);
         }
 
         [TestMethod]
         public void Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContext_ComparisonTypeMaximum()
         {
-            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil( AuthnContextComparisonType.Maximum,
-                "maximum" );
+            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil(AuthnContextComparisonType.Maximum,
+                "maximum");
         }
 
         [TestMethod]
         public void Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContext_ComparisonTypeExact()
         {
-            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil( AuthnContextComparisonType.Exact,
-                "exact" );
+            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil(AuthnContextComparisonType.Exact,
+                "exact");
         }
 
         [TestMethod]
         public void Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContext_ComparisonTypeMinimum()
         {
-            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil( AuthnContextComparisonType.Minimum,
-                "minimum" );
+            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil(AuthnContextComparisonType.Minimum,
+                "minimum");
         }
 
         [TestMethod]
         public void Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContext_ComparisonTypeBetter()
         {
-            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil( AuthnContextComparisonType.Better,
-                "better" );
+            Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil(AuthnContextComparisonType.Better,
+                "better");
         }
 
         [TestMethod]
         public void Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding_HttpPost()
         {
-            Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding( Saml2BindingType.HttpPost,
-                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" );
+            Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding(Saml2BindingType.HttpPost,
+                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST");
         }
 
         [TestMethod]
         public void Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding_Artifact()
         {
-            Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding( Saml2BindingType.Artifact,
-                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" );
+            Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding(Saml2BindingType.Artifact,
+                "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact");
         }
 
         [TestMethod]
@@ -407,11 +407,11 @@ namespace Kentor.AuthServices.Tests.Saml2P
         {
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
-                RequestedAuthnContext = new Saml2RequestedAuthnContext( null, AuthnContextComparisonType.Exact )
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
+                RequestedAuthnContext = new Saml2RequestedAuthnContext(null, AuthnContextComparisonType.Exact)
             }.ToXElement();
 
-            subject.Element( Saml2Namespaces.Saml2P + "RequestedAuthnContext" ).Should().BeNull();
+            subject.Element(Saml2Namespaces.Saml2P + "RequestedAuthnContext").Should().BeNull();
         }
 
         [TestMethod]
@@ -419,15 +419,15 @@ namespace Kentor.AuthServices.Tests.Saml2P
         {
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
-                NameIdPolicy = new Saml2NameIdPolicy( true, NameIdFormat.Transient )
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
+                NameIdPolicy = new Saml2NameIdPolicy(true, NameIdFormat.Transient)
             };
 
-            subject.Invoking( s => s.ToXElement() )
+            subject.Invoking(s => s.ToXElement())
                 .ShouldThrow<InvalidOperationException>()
                 .And.Message.Should()
                 .Be(
-                    "When NameIdPolicy/Format is set to Transient, it is not permitted to specify AllowCreate. Change Format or leave AllowCreate as null." );
+                    "When NameIdPolicy/Format is set to Transient, it is not permitted to specify AllowCreate. Change Format or leave AllowCreate as null.");
         }
 
         [TestMethod]
@@ -435,44 +435,44 @@ namespace Kentor.AuthServices.Tests.Saml2P
         {
             string xmlData = null;
 
-            var subject = Saml2AuthenticationRequest.Read( xmlData, null );
+            var subject = Saml2AuthenticationRequest.Read(xmlData, null);
 
             subject.Should().BeNull();
         }
 
         private void Saml2AuthenticationRequest_ToXElement_AddsRequestedAuthnContextUtil(
-            AuthnContextComparisonType comparisonType, string expectedComparisonType )
+            AuthnContextComparisonType comparisonType, string expectedComparisonType)
         {
             var classRef = "http://www.kentor.se";
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
-                RequestedAuthnContext = new Saml2RequestedAuthnContext( new Uri( classRef ), comparisonType )
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
+                RequestedAuthnContext = new Saml2RequestedAuthnContext(new Uri(classRef), comparisonType)
             }.ToXElement();
 
-            var expected = new XElement( Saml2Namespaces.Saml2P + "root",
-                new XAttribute( XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P ),
-                new XAttribute( XNamespace.Xmlns + "saml2", Saml2Namespaces.Saml2 ),
-                new XElement( Saml2Namespaces.Saml2P + "RequestedAuthnContext",
-                    new XAttribute( "Comparison", expectedComparisonType ),
-                    new XElement( Saml2Namespaces.Saml2 + "AuthnContextClassRef", classRef ) ) )
+            var expected = new XElement(Saml2Namespaces.Saml2P + "root",
+                new XAttribute(XNamespace.Xmlns + "saml2p", Saml2Namespaces.Saml2P),
+                new XAttribute(XNamespace.Xmlns + "saml2", Saml2Namespaces.Saml2),
+                new XElement(Saml2Namespaces.Saml2P + "RequestedAuthnContext",
+                    new XAttribute("Comparison", expectedComparisonType),
+                    new XElement(Saml2Namespaces.Saml2 + "AuthnContextClassRef", classRef)))
                 .Elements().Single();
 
-            var actual = subject.Element( Saml2Namespaces.Saml2P + "RequestedAuthnContext" );
+            var actual = subject.Element(Saml2Namespaces.Saml2P + "RequestedAuthnContext");
 
-            actual.Should().BeEquivalentTo( expected );
+            actual.Should().BeEquivalentTo(expected);
         }
 
-        private void Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding( Saml2BindingType protocolBinding,
-            string expectedProtocolBinding )
+        private void Saml2AuthenticationRequest_ToXElement_AddsProtocolBinding(Saml2BindingType protocolBinding,
+            string expectedProtocolBinding)
         {
             var subject = new Saml2AuthenticationRequest
             {
-                AssertionConsumerServiceUrl = new Uri( "http://destination.example.com" ),
+                AssertionConsumerServiceUrl = new Uri("http://destination.example.com"),
                 Binding = protocolBinding
             }.ToXElement();
 
-            subject.Attribute( "ProtocolBinding" ).Value.Should().Be( expectedProtocolBinding );
+            subject.Attribute("ProtocolBinding").Value.Should().Be(expectedProtocolBinding);
         }
     }
 }
