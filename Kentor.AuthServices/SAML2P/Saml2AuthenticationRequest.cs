@@ -98,6 +98,11 @@ namespace Kentor.AuthServices.Saml2P
                         NameIdPolicy.AllowCreate));
                 }
 
+                if (!string.IsNullOrEmpty(NameIdPolicy.ServiceProviderNameQualifier))
+                {
+                    nameIdPolicyElement.Add(new XAttribute("SPNameQualifier", NameIdPolicy.ServiceProviderNameQualifier));
+                }
+
                 xElement.Add(nameIdPolicyElement);
             }
         }
@@ -181,7 +186,14 @@ namespace Kentor.AuthServices.Saml2P
                     allowCreate = bool.Parse(allowCreateStr);
                 }
 
-                NameIdPolicy = new Saml2NameIdPolicy(allowCreate, nameIdFormat);
+                string serviceProviderNameQualifier = null;
+                var serviceProviderNameQualifierStr = node.Attributes["SPNameQualifier"].GetValueIfNotNull();
+                if ( serviceProviderNameQualifierStr != null )
+                {
+                    serviceProviderNameQualifier = serviceProviderNameQualifierStr;
+                }
+                
+                NameIdPolicy = new Saml2NameIdPolicy(allowCreate, nameIdFormat, serviceProviderNameQualifier);
             }
         }
 
